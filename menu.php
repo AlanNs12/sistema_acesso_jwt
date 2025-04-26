@@ -20,7 +20,7 @@
           <a href="/sistema_acesso_jwt/funcionarios/listar_registros.php" class="dropdown-item">List of records(Consulta de Registros)</a>
           <a href="/sistema_acesso_jwt/funcionarios/listar_funcionarios.php" class="dropdown-item">List of Employee (Lista Funcionários)</a>
           <a href="/sistema_acesso_jwt/funcionarios/registro_hora.php" class="dropdown-item">New register (Novo Registro)</a>
-          <a href="/sistema_acesso_jwt/funcionarios/cadastro_funcionario.html" class="dropdown-item">Register new employee (Cadastrar novo funcionário)</a>
+          <a href="/sistema_acesso_jwt/funcionarios/cadastro_funcionario.php" class="dropdown-item">Register new employee (Cadastrar novo funcionário)</a>
           </div>
           </ul>
           <a href="/sistema_acesso_jwt/logout.php" class="ml-auto p-2 bd-highlight"><button class="btn btn-danger my-2 my-sm-0" type="submit"> Logout (Sair)</button></a>

@@ -5,13 +5,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $funcionario_id = $_POST['funcionario_id'];
     $tipo_registro = $_POST['tipo_registro'];
 
+    // Busca o último registro do funcionário
+$stmt = $pdo->prepare("SELECT tipo_registro FROM registros WHERE funcionario_id = ? ORDER BY id DESC LIMIT 1");
+$stmt->execute([$funcionario_id]);
+$ultimo = $stmt->fetch();
+
+$erro = false;
+
+// Validações de sequência
+if ($tipo_registro === 'entrada' && $ultimo && $ultimo['tipo_registro'] === 'entrada') {
+    $erro = 'Erro: Já existe uma entrada registrada sem uma saída.';
+} elseif ($tipo_registro === 'saida' && (!$ultimo || $ultimo['tipo_registro'] !== 'entrada' && $ultimo['tipo_registro'] !== 'retorno_almoco')) {
+    $erro = 'Erro: Saída só pode ser registrada após uma entrada ou retorno do almoço.';
+} elseif ($tipo_registro === 'almoco' && (!$ultimo || $ultimo['tipo_registro'] !== 'entrada')) {
+    $erro = 'Erro: Saída para almoço só pode ser registrada após uma entrada.';
+} elseif ($tipo_registro === 'retorno_almoco' && (!$ultimo || $ultimo['tipo_registro'] !== 'almoco')) {
+    $erro = 'Erro: Retorno do almoço só pode ser registrado após saída para almoço.';
+}
+
+if ($erro) {
+    echo "<div class=\"alert alert-danger\"><strong>$erro</strong></div>";
+} else {
     $stmt = $pdo->prepare("INSERT INTO registros (funcionario_id, tipo_registro) VALUES (?, ?)");
     $stmt->execute([$funcionario_id, $tipo_registro]);
-    $nome_classe = 'alert alert-success';
-    echo "
-    <div class=\"{$nome_classe}\">
-    <strong>Registro de {$tipo_registro} realizado com sucesso!</strong>
-    </div>";
+    echo "<div class=\"alert alert-success\"><strong>Registro de {$tipo_registro} realizado com sucesso!</strong></div>";
+}
 
 }
 ?>
@@ -40,6 +58,7 @@ if (!isset($_SESSION['usuario_id'])) {
     <form action="registro_hora.php" method="POST">
       <label>Funcionário:</label>
       <select name="funcionario_id" required>
+      <option value="" hidden>Selecione</option>
         <?php
         $stmt = $pdo->query("SELECT * FROM funcionarios");
         $funcionarios = $stmt->fetchAll();
@@ -51,10 +70,11 @@ if (!isset($_SESSION['usuario_id'])) {
       <br>
       <label>Tipo de Registro:</label>
       <select name="tipo_registro" required>
-      <option value="entrada">Entrada</option>
-      <option value="saida">Saída</option>
-      <option value="almoco">Saída para Almoço</option>
-      <option value="retorno_almoco">Retorno do Almoço</option> 
+      <option value="" hidden>Selecione uma opção</option>
+      <option value="entrada">Entrada (Entry)</option>
+      <option value="saida">Saída (Exit)</option>
+      <option value="almoco">Saída para Almoço (leaving for lunch)</option>
+      <option value="retorno_almoco">Retorno do Almoço (Return from Lunch)</option> 
       </select>
       <br><br>
       <button type="submit">Registrar</button>

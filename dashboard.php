@@ -32,7 +32,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <div class="container">
   <div class="card">
-  <img class="card-img-top" src=".../100px180/" alt="Imagem de capa do card">
   <h1 class="card-header">Dashboard</h1>
   <div class="card-body">
   <h4>Bem-vindo, <strong><?= $_SESSION['usuario_nome'] ?>!</strong></h4>

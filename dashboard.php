@@ -32,9 +32,10 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <div class="container">
   <div class="card">
+  <img class="card-img-top" src=".../100px180/" alt="Imagem de capa do card">
   <h1 class="card-header">Dashboard</h1>
   <div class="card-body">
-  <p>Bem-vindo, <strong><?= $_SESSION['usuario_nome'] ?>!</strong></p>
+  <h4>Bem-vindo, <strong><?= $_SESSION['usuario_nome'] ?>!</strong></h4>
     <div class="card-group">
     
     <div class="row">
@@ -85,11 +86,12 @@ if (!isset($_SESSION['usuario_id'])) {
   </div>
 
 </div>
-
   </div>
 
 </div>
-
+<div class="card-footer text-muted">
+    2 dias atrás
+  </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

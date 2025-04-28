@@ -59,27 +59,29 @@ if (!isset($_SESSION['usuario_id'])) {
   <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
   <div class="card-header">Funcionários Cadastrados</div>
   <div class="card-body">
-    <h5 class="card-title"></h5>
-    <p class="card-text"><strong>Total de Funcionários:</strong> <?= $total_funcionarios ?></p>
-    <a href="funcionarios/listar_funcionarios.php" class="btn btn-outline-light">Ver funcionários &#128100;</a>
+    <h5 class="card-title">Lista de funcionários</h5>
+    <p class="card-text"><strong>Total de Funcionários da Embaixada:</strong> <?= $total_funcionarios ?></p>
+    <a href="funcionarios/listar_funcionarios.php" class="btn btn-light">Ver funcionários &#128100;</a>
   </div>
 </div>
   </div> <br>
   <div class="col-sm-3">
-  <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-  <div class="card-header">Cabeçalho</div>
+  <div class="card text-black bg-light mb-3" style="max-width: 18rem;">
+  <div class="card-header">Registro Funcionários</div>
   <div class="card-body">
-    <h5 class="card-title">Título de Card Danger</h5>
-    <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
+    <h5 class="card-title">Criar novo registro</h5>
+    <p class="card-text">Criar novo registro de controle de Funcionarios</p>
+    <a href="funcionarios/listar_funcionarios.php" class="btn btn-success">Criar novo registro &#10133;</a>
   </div>
 </div>
   </div> <br>
   <div class="col-sm-3">
-  <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-  <div class="card-header">Cabeçalho</div>
+  <div class="card text-black bg-warning mb-3" style="max-width: 18rem;">
+  <div class="card-header">Registro Veiculos</div>
   <div class="card-body">
-    <h5 class="card-title">Título de Card Success</h5>
-    <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
+    <h5 class="card-title">Criar novo registro</h5>
+    <p class="card-text">Criar novo registro de controle de Veiculos</p>
+    <a href="funcionarios/listar_funcionarios.php" class="btn btn-success">Criar novo registro &#10133;</a>
   </div>
 </div>
   </div>

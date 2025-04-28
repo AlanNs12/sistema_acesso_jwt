@@ -33,6 +33,7 @@ $registros = $stmt->fetchAll();
 
 // Busca funcionários para o filtro
 $funcionarios = $pdo->query("SELECT * FROM funcionarios")->fetchAll();
+
 ?>
 <?php
 //validação necessidade de login
@@ -87,12 +88,27 @@ if (!isset($_SESSION['usuario_id'])) {
         <th>Date and Time (Data e Hora)</th>
       </tr>
       <?php foreach ($registros as $r): ?>
+        <?php
+
+    $tipos_registro = [
+    'entrada' => 'Entrada (Entry)',
+    'saida' => 'Saída (Exit)',
+    'almoco' => 'Saída para Almoço (Lunch Out)',
+    'retorno_almoco' => 'Retorno do Almoço (Lunch Return)',
+];
+
+?>
       <tr>
         <td><?= htmlspecialchars($r['nome']) ?></td>
-        <td><?= ucfirst(str_replace('_', ' ', $r['tipo_registro'])) ?></td>
+        <td><?= $tipos_registro[$r['tipo_registro']] ?? 'Desconhecido (Unknown)' ?></td>
         <td><?= date('d/m/Y H:i:s', strtotime($r['data_hora'])) ?></td>
       </tr>
-      <?php endforeach; ?>
+        
+
+      <?php endforeach; 
+
+      
+      ?>
     </table>
   </div>
 

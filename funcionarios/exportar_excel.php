@@ -31,6 +31,12 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $registros = $stmt->fetchAll();
 
+$tipos_registro = [
+    'entrada' => 'Entrada (Entry)',
+    'saida' => 'Saida (Exit)',
+    'almoco' => 'Saida para Almoco (Lunch Out)',
+    'retorno_almoco' => 'Retorno do Almoco (Lunch Return)',
+];
 
 echo "<table border='1'>";
 echo "<tr><th>Employee (Funcionario)</th><th>Type (Tipo)</th><th> &#128338; Date and Time (Data e Hora)</th></tr>";
@@ -38,7 +44,7 @@ echo "<tr><th>Employee (Funcionario)</th><th>Type (Tipo)</th><th> &#128338; Date
 foreach ($registros as $r) {
     echo "<tr>";
     echo "<td>" . htmlspecialchars($r['nome']) . "</td>";
-    echo "<td>" . ucfirst(str_replace('_', ' ', $r['tipo_registro'])) . "</td>";
+    echo "<td>" . ($tipos_registro[$r['tipo_registro']] ?? 'Desconhecido (Unknown)') . "</td>";
     echo "<td>" . date('d/m/Y H:i:s', strtotime($r['data_hora'])) . "</td>";
     echo "</tr>";
 }

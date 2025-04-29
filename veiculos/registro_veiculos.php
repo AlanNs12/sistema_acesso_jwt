@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo_registro = $_POST['tipo_registro'];
 
     // Verifica se o último registro é compatível com o novo (evita 2 saídas seguidas, por exemplo)
-    $stmt = $pdo->prepare("SELECT tipo_registro FROM registros_veiculos WHERE veiculo_id = ? ORDER BY data_hora DESC LIMIT 1");
+    $stqt = $pdo->prepare("SELECT tipo_registro FROM registros_veiculos WHERE veiculo_id = ? ORDER BY data_hora DESC LIMIT 1");
     $stmt->execute([$veiculo_id]);
     $ultimo = $stmt->fetchColumn();
 

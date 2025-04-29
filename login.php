@@ -17,4 +17,7 @@ if ($usuario && password_verify($senha, $usuario['senha'])) {
 } else {
     echo "Login inválido.";
 }
+
+$_SESSION['usuario_tipo'] = $usuario['tipo']; 
+
 ?>

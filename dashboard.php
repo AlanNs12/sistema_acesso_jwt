@@ -81,7 +81,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <div class="card-body">
     <h5 class="card-title">Criar novo registro</h5>
     <p class="card-text">Criar novo registro de controle de Veiculos</p>
-    <a href="funcionarios/listar_funcionarios.php" class="btn btn-success">Criar novo registro &#10133;</a>
+    <a href="veiculos/registro_veiculos.php" class="btn btn-success">Criar novo registro &#10133;</a>
   </div>
 </div>
   </div>

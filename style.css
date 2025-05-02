@@ -2,8 +2,7 @@
 body {
   font-family: sans-serif;
   background: #f2f2f2;
-  padding: 20px;
-  margin: auto;
+  
 }
 
 h1 {
@@ -24,3 +23,10 @@ input, button {
   margin: 10px 0;
   font-size: 16px;
 }
+html,
+body {
+  height: 100%;
+}
+
+
+

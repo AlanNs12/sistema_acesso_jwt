@@ -1,4 +1,3 @@
-
 <?php
 $host = 'localhost';
 $db = 'controle_acesso';

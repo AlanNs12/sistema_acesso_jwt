@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $horario_manual = $_POST['horario_manual'] ?? null;
     $data_hora = $horario_manual ? date('Y-m-d') . ' ' . $horario_manual : date('Y-m-d H:i:s');
 
+
     $stmt = $pdo->prepare("INSERT INTO registros_veiculos (veiculo_id, tipo_registro, data_hora, motorista_responsavel, observacoes)
                            VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$veiculo_id, $tipo_registro, $data_hora, $motorista, $observacoes]);

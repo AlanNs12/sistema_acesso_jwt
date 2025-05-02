@@ -85,7 +85,16 @@ if (!isset($_SESSION['usuario_id'])) {
   </div>
 </div>
   </div>
-
+  <div class="col-sm-3">
+  <div class="card text-black bg-warning mb-3" style="max-width: 18rem;">
+  <div class="card-header">Registro Veiculos</div>
+  <div class="card-body">
+    <h5 class="card-title">Criar novo registro</h5>
+    <p class="card-text">Criar novo registro de controle de Veiculos</p>
+    <a href="usuarios.php" class="btn btn-success">Criar novo registro &#10133;</a>
+  </div>
+</div>
+  </div>
 </div>
   </div>
 

@@ -22,7 +22,7 @@ $usuarios = $stmt->fetchAll();
     <?php include 'menu.php'; ?>
     <div class="container mt-4">
         <h2>Lista de Usuários</h2>
-        <a href="usuario_novo.php" class="btn btn-success mb-3">Novo Usuário</a>
+        <a href="admin/usuario_novo.php" class="btn btn-success mb-3">Novo Usuário</a>
         <?php if (isset($_GET['msg']) && $_GET['msg'] === 'excluido'): ?>
             <div class="alert alert-success">Usuário excluído com sucesso!</div>
         <?php endif; ?>
@@ -40,13 +40,16 @@ $usuarios = $stmt->fetchAll();
                     <td><?= htmlspecialchars($u['nome']) ?></td>
                     <td><?= htmlspecialchars($u['email']) ?></td>
                     <td>
-                        <a href="usuario_editar.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="usuario_excluir.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+                        <a href="admin/usuario_editar.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="admin/usuario_excluir.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
 </html>

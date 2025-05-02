@@ -1,5 +1,5 @@
 <?php
-require_once 'conexao.php';
+require_once '../conexao.php';
 $stmt = $pdo->query("SELECT * FROM funcionarios");
 $funcionarios = $stmt->fetchAll();
 ?>

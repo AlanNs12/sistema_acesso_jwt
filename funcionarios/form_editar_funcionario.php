@@ -1,5 +1,5 @@
 <?php
-require_once 'conexao.php';
+require_once '../conexao.php';
 $id = $_GET['id'];
 $stmt = $pdo->prepare("SELECT * FROM funcionarios WHERE id = ?");
 $stmt->execute([$id]);

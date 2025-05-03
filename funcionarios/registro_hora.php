@@ -11,8 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo_registro = $_POST['tipo_registro'];
     $horario_manual = $_POST['horario_manual'] ?? null;
 
-    // Monta data/hora
-    $data_hora = $horario_manual ? date('Y-m-d H:i:s', strtotime($horario_manual)) : date('Y-m-d H:i:s');
+    date_default_timezone_set('America/Sao_Paulo'); // Linha no início do script
+
+    $horario_manual = $_POST['horario_manual'] ?? null;
+
+// Corrigido:
+if ($horario_manual) {
+    $data_hora = str_replace('T', ' ', $horario_manual) . ':00'; // adiciona segundos
+} else {
+    $data_hora = date('Y-m-d H:i:s');
+}
+
 
     // Busca o último registro do funcionário
     $stmt = $pdo->prepare("SELECT tipo_registro FROM registros WHERE funcionario_id = ? ORDER BY id DESC LIMIT 1");

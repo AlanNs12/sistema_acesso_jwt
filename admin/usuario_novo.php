@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$nome, $email, $senha_hash]);
 
         echo "<div class='alert alert-success'>Usuário cadastrado com sucesso!</div>";
+        header("Location: ../usuarios.php?");
     } else {
         echo "<div class='alert alert-danger'>Preencha todos os campos!</div>";
     }
@@ -56,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="password" name="senha" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-success">Salvar</button>
-            <a href="usuarios.php" class="btn btn-secondary">Voltar</a>
+            <a href="../usuarios.php" class="btn btn-secondary">Voltar</a>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

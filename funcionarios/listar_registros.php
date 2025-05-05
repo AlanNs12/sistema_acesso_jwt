@@ -136,12 +136,28 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <!-- Paginação -->
   <div>
-    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-      <a href="?pagina=<?= $i ?>&funcionario_id=<?= $filtro_funcionario ?>&data_inicio=<?= $filtro_data_inicio ?>&data_fim=<?= $filtro_data_fim ?>">
-        <?= $i ?>
-      </a>
-      <?php if ($i < $total_paginas): ?> | <?php endif; ?>
-    <?php endfor; ?>
+  <ul class="pagination justify-content-center">
+
+<!-- Botão "Anterior" -->
+<li class="page-item <?= ($pagina_atual <= 1) ? 'disabled' : '' ?>">
+  <a class="page-link" href="?pagina=<?= $pagina_atual - 1 ?>&funcionario_id=<?= $filtro_funcionario ?>&data_inicio=<?= $filtro_data_inicio ?>&data_fim=<?= $filtro_data_fim ?>">Anterior</a>
+</li>
+
+<!-- Números das páginas -->
+<?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+  <li class="page-item <?= ($i == $pagina_atual) ? 'active' : '' ?>">
+    <a class="page-link" href="?pagina=<?= $i ?>&funcionario_id=<?= $filtro_funcionario ?>&data_inicio=<?= $filtro_data_inicio ?>&data_fim=<?= $filtro_data_fim ?>">
+      <?= $i ?>
+    </a>
+  </li>
+<?php endfor; ?>
+
+<!-- Botão "Próximo" -->
+<li class="page-item <?= ($pagina_atual >= $total_paginas) ? 'disabled' : '' ?>">
+  <a class="page-link" href="?pagina=<?= $pagina_atual + 1 ?>&funcionario_id=<?= $filtro_funcionario ?>&data_inicio=<?= $filtro_data_inicio ?>&data_fim=<?= $filtro_data_fim ?>">Próximo</a>
+</li>
+
+</ul>
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

@@ -22,7 +22,7 @@ if (!$id) {
 
 $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
 if ($stmt->execute([$id])) {
-    header("Location: usuarios.php?msg=excluido");
+    header("Location: ../usuarios.php?msg=excluido");
     exit;
 } else {
     echo "<div class='alert alert-danger'>Erro ao excluir usuário.</div>";

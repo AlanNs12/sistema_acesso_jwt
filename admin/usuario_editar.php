@@ -37,8 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($nome && $email) {
         $stmt = $pdo->prepare("UPDATE usuarios SET nome = ?, email = ? WHERE id = ?");
         $stmt->execute([$nome, $email, $id]);
+        header("Location: ../usuarios.php?msg=atualizado");
         echo "<div class='alert alert-success'>Usuário atualizado com sucesso!</div>";
-        // Atualiza os dados exibidos no formulário
+        
         $usuario['nome'] = $nome;
         $usuario['email'] = $email;
     } else {

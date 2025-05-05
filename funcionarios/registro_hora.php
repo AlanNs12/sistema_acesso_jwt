@@ -10,18 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $funcionario_id = $_POST['funcionario_id'];
     $tipo_registro = $_POST['tipo_registro'];
     $horario_manual = $_POST['horario_manual'] ?? null;
+    $observacoes = $_POST['observacoes'] ?? null;
 
-    date_default_timezone_set('America/Sao_Paulo'); // Linha no início do script
+    date_default_timezone_set('America/Sao_Paulo');
 
-    $horario_manual = $_POST['horario_manual'] ?? null;
-
-// Corrigido:
-if ($horario_manual) {
-    $data_hora = str_replace('T', ' ', $horario_manual) . ':00'; // adiciona segundos
-} else {
-    $data_hora = date('Y-m-d H:i:s');
-}
-
+    if ($horario_manual) {
+        $data_hora = str_replace('T', ' ', $horario_manual) . ':00'; // adiciona segundos
+    } else {
+        $data_hora = date('Y-m-d H:i:s');
+    }
 
     // Busca o último registro do funcionário
     $stmt = $pdo->prepare("SELECT tipo_registro FROM registros WHERE funcionario_id = ? ORDER BY id DESC LIMIT 1");
@@ -44,8 +41,8 @@ if ($horario_manual) {
     if ($erro) {
         echo "<div class=\"alert alert-danger\"><strong>$erro</strong></div>";
     } else {
-        $stmt = $pdo->prepare("INSERT INTO registros (funcionario_id, tipo_registro, data_hora) VALUES (?, ?, ?)");
-        $stmt->execute([$funcionario_id, $tipo_registro, $data_hora]);
+        $stmt = $pdo->prepare("INSERT INTO registros (funcionario_id, tipo_registro, data_hora, observacoes) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$funcionario_id, $tipo_registro, $data_hora, $observacoes]);
         echo "<div class=\"alert alert-success\"><strong>Registro de {$tipo_registro} realizado com sucesso!</strong></div>";
     }
 }
@@ -90,6 +87,10 @@ if ($horario_manual) {
     <label>Data e Hora Manual (opcional):</label>
     <input type="datetime-local" name="horario_manual">
     <br><br>
+
+    <label>Observações (opcional):</label>
+    <textarea name="observacoes" rows="3" class="form-control" placeholder="Ex: Saiu mais cedo por motivo de consulta médica"></textarea>
+    <br>
 
     <button class="btn btn-primary" type="submit">Registrar</button>
   </form>

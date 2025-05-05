@@ -32,7 +32,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <div class="container">
   <div class="card">
-  <h1 class="card-header">Dashboard</h1>
+  <h1 class="card-header">Painel Inicial</h1>
   <div class="card-body">
   <h4>Bem-vindo, <strong><?= $_SESSION['usuario_nome'] ?>!</strong></h4>
     <div class="card-group">
@@ -90,7 +90,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 </div>
 <div class="card-footer text-muted">
-    2 dias atrás
+    
   </div>
   </div>
 

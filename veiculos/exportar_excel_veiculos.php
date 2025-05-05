@@ -16,6 +16,34 @@ $stmt = $pdo->prepare("SELECT rv.*, v.placa, v.modelo
 $stmt->execute([$data_filtro]);
 $registros = $stmt->fetchAll();
 
+echo "
+<style>
+    table {
+        border-collapse: collapse;
+        
+        font-family: Arial, sans-serif;
+        
+    }
+    th {
+        background-color: #2c3e50;
+        color: white;
+        padding: 6px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    td {
+        padding: 6px;
+        border: 1px solid #ccc;
+        vertical-align: top;
+    }
+    tr {
+        text-align: center;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+";
 echo "<table border='1'>";
 echo "<tr>
         <th>Data/Hora</th>

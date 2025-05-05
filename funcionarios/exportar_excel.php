@@ -47,7 +47,7 @@ echo "
 <style>
     table {
         border-collapse: collapse;
-        width: 60%;
+        text-align: center;
         font-family: Arial, sans-serif;
         
     }
@@ -63,6 +63,9 @@ echo "
         border: 1px solid #ccc;
         vertical-align: top;
     }
+    tr {
+        text-align: center;
+    }
     tr:nth-child(even) {
         background-color: #f2f2f2;
     }
@@ -70,12 +73,15 @@ echo "
 ";
 
 echo "<table>";
+echo "<tr><th colspan=\"5\">Embassy Of the Phillipines to Brasilia | Control of Access System (Controle de Acesso)</th>
+</tr>";
+echo "<tr></tr>";
 echo "<tr>
-        <th>Employee (Funcionário)</th>
-        <th>Type (Tipo)</th>
-        <th>Date (Data)</th>
-        <th>Time (Hora)</th>
-        <th>Observations (Observações)</th>
+    <th>Employee (Funcionário)</th>
+    <th>Type (Tipo)</th>
+    <th>Date (Data)</th>
+    <th>Time (Hora)</th>
+    <th>Observations (Observações)</th>
       </tr>";
 
 foreach ($registros as $r) {

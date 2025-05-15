@@ -49,55 +49,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Registro de Entrada/Saída</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Registro de Entrada/Saída</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
+
 <body>
-<?php include '../menu.php'; ?>
+    <?php include '../menu.php'; ?>
 
-<div class="container">
-  <h1>Registrar Entrada, Saída ou Almoço</h1>
-  <form action="registro_hora.php" method="POST">
-    <label>Funcionário:</label>
-    <select name="funcionario_id" required>
-      <option value="" hidden>Selecione</option>
-      <?php
-      $stmt = $pdo->query("SELECT * FROM funcionarios");
-      $funcionarios = $stmt->fetchAll();
-      foreach ($funcionarios as $f) {
-          echo "<option value='{$f['id']}'>{$f['nome']}</option>";
-      }
-      ?>
-    </select>
-    <br><br>
+    <div class="container">
+        <h1>Registrar Entrada, Saída ou Almoço</h1>
+        <form action="registro_hora.php" method="POST">
+            <label>Funcionário:</label>
+            <select name="funcionario_id" required>
+                <option value="" hidden>Selecione</option>
+                <?php
+                $stmt = $pdo->query("SELECT * FROM funcionarios");
+                $funcionarios = $stmt->fetchAll();
+                foreach ($funcionarios as $f) {
+                    echo "<option value='{$f['id']}'>{$f['nome']}</option>";
+                }
+                ?>
+            </select>
+            <br><br>
 
-    <label>Tipo de Registro:</label>
-    <select name="tipo_registro" required>
-      <option value="" hidden>Selecione uma opção</option>
-      <option value="entrada">Entrada (Entry)</option>
-      <option value="saida">Saída (Exit)</option>
-      <option value="almoco">Saída para Almoço (Leaving for Lunch)</option>
-      <option value="retorno_almoco">Retorno do Almoço (Return from Lunch)</option>
-    </select>
-    <br><br>
+            <label>Tipo de Registro:</label>
+            <select name="tipo_registro" required>
+                <option value="" hidden>Selecione uma opção</option>
+                <option value="entrada">Entrada (Entry)</option>
+                <option value="saida">Saída (Exit)</option>
+                <option value="almoco">Saída para Almoço (Leaving for Lunch)</option>
+                <option value="retorno_almoco">Retorno do Almoço (Return from Lunch)</option>
+            </select>
+            <br><br>
 
-    <label>Data e Hora Manual (opcional):</label>
-    <input type="datetime-local" name="horario_manual">
-    <br><br>
+            <label>Data e Hora Manual (opcional):</label>
+            <input type="datetime-local" name="horario_manual">
+            <br><br>
 
-    <label>Observações (opcional):</label>
-    <textarea name="observacoes" rows="3" class="form-control" placeholder="Ex: Saiu mais cedo por motivo de consulta médica"></textarea>
-    <br>
+            <label>Observações (opcional):</label>
+            <textarea name="observacoes" rows="3" class="form-control"
+                placeholder="Ex: Saiu mais cedo por motivo de consulta médica"></textarea>
+            <br>
 
-    <button class="btn btn-primary" type="submit">Registrar</button>
-  </form>
-</div>
+            <button class="btn btn-primary" type="submit">Registrar</button>
+        </form>
+    </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
+
 </html>

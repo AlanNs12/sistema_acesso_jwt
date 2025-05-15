@@ -1,11 +1,9 @@
 <?php
 require_once '../conexao.php';
 
-// Cabeçalhos com charset e BOM UTF-8
 header("Content-Type: application/vnd.ms-excel; charset=UTF-8");
 header("Content-Disposition: attachment; filename=registros_" . date('Ymd_His') . ".xls");
 
-// UTF-8 BOM
 echo "\xEF\xBB\xBF";  // Importante! Corrige os acentos no Excel
 
 $filtro_funcionario = $_GET['funcionario_id'] ?? '';
@@ -42,7 +40,7 @@ $tipos_registro = [
     'retorno_almoco' => 'Retorno do Almoço (Lunch Return)',
 ];
 
-// Estilo da tabela
+
 echo "
 <style>
     table {

@@ -11,10 +11,11 @@ body {
   background-color: #fff;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
+h1,
+h2 {
   color: #333;
 }
 
@@ -30,7 +31,9 @@ form label {
   font-weight: bold;
 }
 
-form input, form select, form button {
+form input,
+form select,
+form button {
   padding: 8px;
   font-size: 14px;
   border-radius: 5px;
@@ -54,7 +57,8 @@ table {
   margin-top: 10px;
 }
 
-table th, table td {
+table th,
+table td {
   padding: 10px;
   border: 1px solid #ccc;
   text-align: left;

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$nome, $email, $id]);
         header("Location: ../usuarios.php?msg=atualizado");
         echo "<div class='alert alert-success'>Usuário atualizado com sucesso!</div>";
-        
+
         $usuario['nome'] = $nome;
         $usuario['email'] = $email;
     } else {
@@ -50,11 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Usuário</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
+
 <body>
     <?php include '../menu.php'; ?>
     <div class="container mt-4">
@@ -62,18 +64,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST">
             <div class="form-group">
                 <label>Nome:</label>
-                <input type="text" name="nome" class="form-control" value="<?= htmlspecialchars($usuario['nome']) ?>" required>
+                <input type="text" name="nome" class="form-control" value="<?= htmlspecialchars($usuario['nome']) ?>"
+                    required>
             </div>
             <div class="form-group">
                 <label>E-mail:</label>
-                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($usuario['email']) ?>" required>
+                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($usuario['email']) ?>"
+                    required>
             </div>
             <button type="submit" class="btn btn-primary">Atualizar</button>
             <a href="../usuarios.php" class="btn btn-secondary">Voltar</a>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
+
 </html>

@@ -28,26 +28,28 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <div class="container">
     <h1> &#128100; Funcionários Cadastrados</h1>
-    <table border="1" cellpadding="10" cellspacing="0">
-      <tr>
-        <th>Nome</th>
-        <th>CPF</th>
-        <th>Função</th>
-        <th>Ações</th>
-      </tr>
-      <?php foreach ($funcionarios as $f): ?>
+    <div class="w-100" style="max-width: 400px;">
+      <table border="1" cellpadding="10" cellspacing="0">
         <tr>
-          <td><?= htmlspecialchars($f['nome']) ?></td>
-          <td><?= htmlspecialchars($f['cpf']) ?></td>
-          <td><?= htmlspecialchars($f['funcao']) ?></td>
-          <td>
-            &#128221; <a href="form_editar_funcionario.php?id=<?= $f['id'] ?>"> Editar</a> |
-            &#10060; <a href="excluir_funcionario.php?id=<?= $f['id'] ?>"
-              onclick="return confirm('Deseja excluir?')">Excluir</a>
-          </td>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Função</th>
+          <th>Ações</th>
         </tr>
-      <?php endforeach; ?>
-    </table>
+        <?php foreach ($funcionarios as $f): ?>
+          <tr>
+            <td><?= htmlspecialchars($f['nome']) ?></td>
+            <td><?= htmlspecialchars($f['cpf']) ?></td>
+            <td><?= htmlspecialchars($f['funcao']) ?></td>
+            <td>
+              &#128221; <a href="form_editar_funcionario.php?id=<?= $f['id'] ?>"> Editar</a> |
+              &#10060; <a href="excluir_funcionario.php?id=<?= $f['id'] ?>"
+                onclick="return confirm('Deseja excluir?')">Excluir</a>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </table>
+    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

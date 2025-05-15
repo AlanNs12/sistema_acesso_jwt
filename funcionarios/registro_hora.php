@@ -53,50 +53,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Registro de Entrada/Saída</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 
 <body>
     <?php include '../menu.php'; ?>
-
     <div class="container">
-        <h1>Registrar Entrada, Saída ou Almoço</h1>
-        <form action="registro_hora.php" method="POST">
-            <label>Funcionário:</label>
-            <select name="funcionario_id" required>
-                <option value="" hidden>Selecione</option>
-                <?php
-                $stmt = $pdo->query("SELECT * FROM funcionarios");
-                $funcionarios = $stmt->fetchAll();
-                foreach ($funcionarios as $f) {
-                    echo "<option value='{$f['id']}'>{$f['nome']}</option>";
-                }
-                ?>
-            </select>
-            <br><br>
+        <div class="card">
+            <h1 class="card-header">Registro de Funcionario</h1>
+            <div class="card-body">
+                <div class="container d-flex justify-content-center">
+                    <div class="w-100" style="max-width: 400px;">
+                        <form action="registro_hora.php" method="POST">
+                            <div class="form-group">
+                                <label>Funcionário:</label>
+                                <select name="funcionario_id" class="form-control" required>
+                                    <option value="" hidden>Selecione</option>
+                                    <?php
+                                    $stmt = $pdo->query("SELECT * FROM funcionarios");
+                                    $funcionarios = $stmt->fetchAll();
+                                    foreach ($funcionarios as $f) {
+                                        echo "<option value='{$f['id']}'>{$f['nome']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
 
-            <label>Tipo de Registro:</label>
-            <select name="tipo_registro" required>
-                <option value="" hidden>Selecione uma opção</option>
-                <option value="entrada">Entrada (Entry)</option>
-                <option value="saida">Saída (Exit)</option>
-                <option value="almoco">Saída para Almoço (Leaving for Lunch)</option>
-                <option value="retorno_almoco">Retorno do Almoço (Return from Lunch)</option>
-            </select>
-            <br><br>
 
-            <label>Data e Hora Manual (opcional):</label>
-            <input type="datetime-local" name="horario_manual">
-            <br><br>
+                            <div class="form-group">
+                                <label>Tipo de Registro:</label>
+                                <select name="tipo_registro" class="form-control" required>
+                                    <option value="" hidden>Selecione uma opção</option>
+                                    <option value="entrada">Entrada (Entry)</option>
+                                    <option value="saida">Saída (Exit)</option>
+                                    <option value="almoco">Saída para Almoço (Leaving for Lunch)</option>
+                                    <option value="retorno_almoco">Retorno do Almoço (Return from Lunch)</option>
+                                </select>
+                            </div>
 
-            <label>Observações (opcional):</label>
-            <textarea name="observacoes" rows="3" class="form-control"
-                placeholder="Ex: Saiu mais cedo por motivo de consulta médica"></textarea>
-            <br>
+                            <div class="form-group">
+                                <label>Data e Hora Manual (opcional):</label>
+                                <input type="datetime-local" name="horario_manual" class="form-control">
+                                <label>Observações (opcional):</label>
+                                <textarea name="observacoes" rows="3" class="form-control"
+                                    placeholder="Ex: Saiu mais cedo por motivo de consulta médica"></textarea>
+                            </div>
 
-            <button class="btn btn-primary" type="submit">Registrar</button>
-        </form>
+                            <button class="btn btn-success" type="submit">Registrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

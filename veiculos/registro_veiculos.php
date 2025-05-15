@@ -50,44 +50,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <?php include '../menu.php'; ?>
-    <div class="container" style="max-width: 500px">
-        <h1>Registrar Saída de Veículo</h1>
-        <form method="POST" action="registro_veiculos.php">
-            <div class="form-group">
-                <label for="veiculo_id">Selecione o Veículo:</label>
-                <select name="veiculo_id" class="form-control" required>
-                    <option value="" hidden>Selecione</option>
-                    <?php
-                    $stmt = $pdo->query("SELECT id, placa, modelo FROM veiculos");
-                    while ($veiculo = $stmt->fetch()) {
-                        echo "<option value='{$veiculo['id']}'>{$veiculo['placa']} - {$veiculo['modelo']}</option>";
-                    }
-                    ?>
-                </select>
+    <div class="container">
+        <div class="card">
+            <h1 class="card-header">Registrar Saída de Veículo</h1>
+            <div class="card-body">
+                <div class="container d-flex justify-content-center">
+                    <div class="w-100" style="max-width: 400px;">
+                        <form method="POST" action="registro_veiculos.php">
+                            <div class="form-group">
+                                <label for="veiculo_id">Selecione o Veículo:</label>
+                                <select name="veiculo_id" class="form-control" required>
+                                    <option value="" hidden>Selecione</option>
+                                    <?php
+                                    $stmt = $pdo->query("SELECT id, placa, modelo FROM veiculos");
+                                    while ($veiculo = $stmt->fetch()) {
+                                        echo "<option value='{$veiculo['id']}'>{$veiculo['placa']} - {$veiculo['modelo']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <input type="hidden" name="tipo_registro" value="saida">
+                            <div class="form-group">
+                                <label for="motorista">Motorista Responsável:</label>
+                                <input type="text" name="motorista" class="form-control" placeholder="Nome motorista..."
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="observacoes">Observações:</label>
+                                <textarea name="observacoes" class="form-control" rows="3"
+                                    placeholder="Ex: Veículo foi para manutenção ou passageiros"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="horario_manual">Horário Manual (opcional):</label>
+                                <input type="time" name="horario_manual" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-success">Registrar Saída</button>
+                        </form>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <!-- Campo oculto para tipo_registro fixo -->
-            <input type="hidden" name="tipo_registro" value="saida">
-
-            <div class="form-group">
-                <label for="motorista">Motorista Responsável:</label>
-                <input type="text" name="motorista" class="form-control" placeholder="Ex: João da Silva">
-            </div>
-
-            <div class="form-group">
-                <label for="observacoes">Observações:</label>
-                <textarea name="observacoes" class="form-control" rows="3"
-                    placeholder="Ex: Veículo foi para manutenção ou passageiros"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="horario_manual">Horário Manual (opcional):</label>
-                <input type="time" name="horario_manual" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-success">Registrar Saída</button>
-        </form>
     </div>
+
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

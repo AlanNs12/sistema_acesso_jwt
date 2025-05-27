@@ -79,6 +79,9 @@ if (!empty($ids_saidas)) {
         $retornos_por_saida[$retorno['saida_id']] = $retorno;
     }
 }
+
+
+
 // Agrupar por veículo: cada saída seguida de seu retorno
 $agrupados = [];
 

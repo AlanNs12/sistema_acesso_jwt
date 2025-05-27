@@ -8,21 +8,29 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'admin') {
     exit;
 }
 
-$registro_id = $_POST['registro_id'] ?? null;
+$veiculo_id = $_POST['veiculo_id'] ?? null;
 
-if (!$registro_id) {
-    echo "ID do registro não fornecido.";
+if (!$veiculo_id) {
+    echo "ID do veículo não fornecido.";
     exit;
 }
 
-// Apagar o retorno, se existir
-$stmt = $pdo->prepare("DELETE FROM registros_veiculos WHERE saida_id = ?");
-$stmt->execute([$registro_id]);
+try {
+    // Tentar excluir o veículo
+    $stmt = $pdo->prepare("DELETE FROM veiculos WHERE id = ?");
+    $stmt->execute([$veiculo_id]);
 
-// Apagar o registro de saída
-$stmt = $pdo->prepare("DELETE FROM registros_veiculos WHERE id = ?");
-$stmt->execute([$registro_id]);
+    $_SESSION['mensagem_sucesso'] = "Veículo excluído com sucesso.";
+} catch (PDOException $e) {
+    // Caso ocorra erro de integridade (referência existente), desativar o veículo
+    if ($e->getCode() === '23000') {
+        $pdo->prepare("UPDATE veiculos SET ativo = 0 WHERE id = ?")->execute([$veiculo_id]);
+        $_SESSION['mensagem_erro'] = "O veículo possui registros vinculados e não pode ser excluído. Ele foi desativado, mas os dados foram mantidos.";
+    } else {
+        $_SESSION['mensagem_erro'] = "Erro ao excluir veículo: " . $e->getMessage();
+    }
+}
 
-header("Location: registros_veiculos_agrupados.php");
+header("Location: gerenciar_veiculos.php");
 exit;
 ?>

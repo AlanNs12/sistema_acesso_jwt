@@ -109,10 +109,12 @@ foreach ($saidas as $saida) {
     <meta charset="UTF-8">
     <title>Registros Veiculos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
 </head>
 
 <body>
     <?php include '../menu.php'; ?>
+    
     <div class="container">
         <div class="card">
             <h1 class="card-header">Registros de Veículos</h1>
@@ -128,79 +130,77 @@ foreach ($saidas as $saida) {
                                 Excel</a>
                         </form>
 
-                        <table class="table table-bordered table-striped table-responsive">
-                            <?php
-                            $mostrar_coluna_acoes = false;
-                            foreach ($agrupados as $linha) {
-                                if (empty($linha['retorno_data']) || $_SESSION['usuario_tipo'] === 'admin') {
-                                    $mostrar_coluna_acoes = true;
-                                    break;
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <?php
+                                $mostrar_coluna_acoes = false;
+                                foreach ($agrupados as $linha) {
+                                    if (empty($linha['retorno_data']) || $_SESSION['usuario_tipo'] === 'admin') {
+                                        $mostrar_coluna_acoes = true;
+                                        break;
+                                    }
                                 }
-                            }
-                            ?>
-
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Data Saída</th>
-                                    <th>Hora Saída</th>
-                                    <th>Condutor</th>
-                                    <th>Veículo</th>
-                                    <th>Data Retorno</th>
-                                    <th>Hora Retorno</th>
-                                    <th>Observações</th>
-                                    <?php if ($mostrar_coluna_acoes): ?>
-                                        <th>Ações</th>
-                                    <?php endif; ?>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <?php if ($agrupados): ?>
-                                    <?php foreach ($agrupados as $linha): ?>
-                                        <tr>
-                                            <td><?= $linha['saida_data'] ?></td>
-                                            <td><?= $linha['saida_hora'] ?></td>
-                                            <td><?= $linha['motorista'] ?></td>
-                                            <td><?= $linha['veiculo'] ?></td>
-                                            <td><?= $linha['retorno_data'] ?></td>
-                                            <td><?= $linha['retorno_hora'] ?></td>
-                                            <td><?= $linha['observacoes'] ?></td>
-
-                                            <?php if ($mostrar_coluna_acoes): ?>
-                                                <td>
-                                                    <?php if (empty($linha['retorno_data'])): ?>
-                                                        <form method="POST" action="registrar_retorno_rapido.php"
-                                                            style="margin-bottom: 5px;">
-                                                            <input type="hidden" name="veiculo"
-                                                                value="<?= htmlspecialchars($linha['veiculo']) ?>">
-                                                            <input type="hidden" name="motorista"
-                                                                value="<?= htmlspecialchars($linha['motorista']) ?>">
-                                                            <input type="hidden" name="observacoes"
-                                                                value="<?= htmlspecialchars($linha['observacoes']) ?>">
-                                                            <button type="submit" class="btn btn-sm btn-warning">Registrar
-                                                                Retorno</button>
-                                                        </form>
-                                                    <?php endif; ?>
-
-                                                    <?php if ($_SESSION['usuario_tipo'] === 'admin'): ?>
-                                                        <form method="POST" action="excluir_registro_veiculo.php"
-                                                            onsubmit="return confirm('Tem certeza que deseja excluir este registro?');">
-                                                            <input type="hidden" name="registro_id" value="<?= $linha['id'] ?>">
-                                                            <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                                                        </form>
-                                                    <?php endif; ?>
-
-                                                </td>
-                                            <?php endif; ?>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
+                                ?>
+                                <thead class="thead-dark">
                                     <tr>
-                                        <td colspan="<?= $mostrar_coluna_acoes ? 8 : 7 ?>">Nenhum registro encontrado.</td>
+                                        <th>Data Saída</th>
+                                        <th>Hora Saída</th>
+                                        <th>Condutor</th>
+                                        <th>Veículo</th>
+                                        <th>Data Retorno</th>
+                                        <th>Hora Retorno</th>
+                                        <th>Observações</th>
+                                        <?php if ($mostrar_coluna_acoes): ?>
+                                            <th>Ações</th>
+                                        <?php endif; ?>
                                     </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php if ($agrupados): ?>
+                                        <?php foreach ($agrupados as $linha): ?>
+                                            <tr>
+                                                <td><?= $linha['saida_data'] ?></td>
+                                                <td><?= $linha['saida_hora'] ?></td>
+                                                <td><?= $linha['motorista'] ?></td>
+                                                <td><?= $linha['veiculo'] ?></td>
+                                                <td><?= $linha['retorno_data'] ?></td>
+                                                <td><?= $linha['retorno_hora'] ?></td>
+                                                <td><?= $linha['observacoes'] ?></td>
+                                                <?php if ($mostrar_coluna_acoes): ?>
+                                                    <td>
+                                                        <?php if (empty($linha['retorno_data'])): ?>
+                                                            <form method="POST" action="registrar_retorno_rapido.php"
+                                                                style="margin-bottom: 5px;">
+                                                                <input type="hidden" name="veiculo"
+                                                                    value="<?= htmlspecialchars($linha['veiculo']) ?>">
+                                                                <input type="hidden" name="motorista"
+                                                                    value="<?= htmlspecialchars($linha['motorista']) ?>">
+                                                                <input type="hidden" name="observacoes"
+                                                                    value="<?= htmlspecialchars($linha['observacoes']) ?>">
+                                                                <button type="submit" class="btn btn-sm btn-warning">Registrar
+                                                                    Retorno</button>
+                                                            </form>
+                                                        <?php endif; ?>
+                                                        <?php if ($_SESSION['usuario_tipo'] === 'admin'): ?>
+                                                            <form method="POST" action="excluir_registro_veiculo.php"
+                                                                onsubmit="return confirm('Tem certeza que deseja excluir este registro?');">
+                                                                <input type="hidden" name="registro_id" value="<?= $linha['id'] ?>">
+                                                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                                            </form>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                <?php endif; ?>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="<?= $mostrar_coluna_acoes ? 8 : 7 ?>">Nenhum registro encontrado.
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

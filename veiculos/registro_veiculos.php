@@ -8,6 +8,8 @@ if (!isset($_SESSION['usuario_id'])) {
     exit;
 }
 
+$mensagem_alerta = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $veiculo_id = $_POST['veiculo_id'];
     $motorista = $_POST['motorista'] ?? '';
@@ -29,15 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $saida_sem_retorno = $stmt->fetchColumn();
 
     if ($saida_sem_retorno > 0) {
-        echo "<div class='alert alert-danger'>Este veículo ainda não retornou da última saída. Registre o retorno antes de uma nova saída.</div>";
+        $mensagem_alerta = "<div class='alert alert-danger'>Este veículo ainda não retornou da última saída. Registre o retorno antes de uma nova saída.</div>";
     } else {
         $stmt = $pdo->prepare("INSERT INTO registros_veiculos (veiculo_id, tipo_registro, data_hora, motorista_responsavel, observacoes)
                                VALUES (?, 'saida', ?, ?, ?)");
         $stmt->execute([$veiculo_id, $data_hora, $motorista, $observacoes]);
-        echo "<div class='alert alert-success'>Registro de saída realizado com sucesso!</div>";
+        $mensagem_alerta = "<div class='alert alert-success'>Registro de saída realizado com sucesso!</div>";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -55,6 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card">
             <h1 class="card-header">Registrar Saída de Veículo</h1>
             <div class="card-body">
+                <?php if (!empty($mensagem_alerta))
+                    echo $mensagem_alerta; ?>
                 <div class="container d-flex justify-content-center">
                     <div class="w-100" style="max-width: 400px;">
                         <form method="POST" action="registro_veiculos.php">
@@ -91,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
         </div>
-
     </div>
 
 

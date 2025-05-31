@@ -1,6 +1,7 @@
 <?php
 require_once '../conexao.php';
 session_start();
+
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.html");
     exit;
@@ -8,45 +9,41 @@ if (!isset($_SESSION['usuario_id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $funcionario_id = $_POST['funcionario_id'];
-    $tipo_registro = $_POST['tipo_registro'];
     $horario_manual = $_POST['horario_manual'] ?? null;
     $observacoes = $_POST['observacoes'] ?? null;
 
     date_default_timezone_set('America/Sao_Paulo');
 
-    if ($horario_manual) {
-        $data_hora = str_replace('T', ' ', $horario_manual) . ':00'; // adiciona segundos
+    $data_hora_completa = $horario_manual
+        ? str_replace('T', ' ', $horario_manual) . ':00'
+        : date('Y-m-d H:i:s');
+
+    $data = substr($data_hora_completa, 0, 10);
+    $hora = substr($data_hora_completa, 11, 8);
+
+    // Verifica se já existe registro para o dia
+    $stmt = $pdo->prepare("SELECT * FROM registros_funcionarios WHERE funcionario_id = ? AND data = ?");
+    $stmt->execute([$funcionario_id, $data]);
+    $registro = $stmt->fetch();
+
+    if (!$registro) {
+        // Se não existir, insere como entrada
+        $stmt = $pdo->prepare("INSERT INTO registros_funcionarios (funcionario_id, data, hora_entrada, observacoes) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$funcionario_id, $data, $hora, $observacoes]);
+        echo "<div class=\"alert alert-success\"><strong>Entrada registrada com sucesso!</strong></div>";
+    } elseif (!$registro['hora_saida']) {
+        // Se já tem entrada mas não tem saída
+        $stmt = $pdo->prepare("UPDATE registros_funcionarios SET hora_saida = ?, observacoes = ? WHERE id = ?");
+        $stmt->execute([$hora, $observacoes, $registro['id']]);
+        echo "<div class=\"alert alert-success\"><strong>Saída registrada com sucesso!</strong></div>";
     } else {
-        $data_hora = date('Y-m-d H:i:s');
-    }
-
-    // Busca o último registro do funcionário
-    $stmt = $pdo->prepare("SELECT tipo_registro FROM registros WHERE funcionario_id = ? ORDER BY id DESC LIMIT 1");
-    $stmt->execute([$funcionario_id]);
-    $ultimo = $stmt->fetch();
-
-    $erro = false;
-
-    // Validações de sequência
-    if ($tipo_registro === 'entrada' && $ultimo && $ultimo['tipo_registro'] === 'entrada') {
-        $erro = 'Erro: Já existe uma entrada registrada sem uma saída.';
-    } elseif ($tipo_registro === 'saida' && (!$ultimo || ($ultimo['tipo_registro'] !== 'entrada' && $ultimo['tipo_registro'] !== 'retorno_almoco'))) {
-        $erro = 'Erro: Saída só pode ser registrada após uma entrada ou retorno do almoço.';
-    } elseif ($tipo_registro === 'almoco' && (!$ultimo || $ultimo['tipo_registro'] !== 'entrada')) {
-        $erro = 'Erro: Saída para almoço só pode ser registrada após uma entrada.';
-    } elseif ($tipo_registro === 'retorno_almoco' && (!$ultimo || $ultimo['tipo_registro'] !== 'almoco')) {
-        $erro = 'Erro: Retorno do almoço só pode ser registrado após saída para almoço.';
-    }
-
-    if ($erro) {
-        echo "<div class=\"alert alert-danger\"><strong>$erro</strong></div>";
-    } else {
-        $stmt = $pdo->prepare("INSERT INTO registros (funcionario_id, tipo_registro, data_hora, observacoes) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$funcionario_id, $tipo_registro, $data_hora, $observacoes]);
-        echo "<div class=\"alert alert-success\"><strong>Registro de {$tipo_registro} realizado com sucesso!</strong></div>";
+        // Se já tem entrada e saída, impede novo registro
+        echo "<div class=\"alert alert-warning\"><strong>Registro já completo para hoje. Entrada e saída já registradas.</strong></div>";
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -80,28 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </select>
                             </div>
 
-
-                            <div class="form-group">
-                                <label>Tipo de Registro:</label>
-                                <select name="tipo_registro" class="form-control" required>
-                                    <option value="" hidden>Selecione uma opção</option>
-                                    <option value="entrada">Entrada (Entry)</option>
-                                    <option value="saida">Saída (Exit)</option>
-                                    <option value="almoco">Saída para Almoço (Leaving for Lunch)</option>
-                                    <option value="retorno_almoco">Retorno do Almoço (Return from Lunch)</option>
-                                </select>
-                            </div>
-
                             <div class="form-group">
                                 <label>Data e Hora Manual (opcional):</label>
                                 <input type="datetime-local" name="horario_manual" class="form-control">
                                 <label>Observações (opcional):</label>
                                 <textarea name="observacoes" rows="3" class="form-control"
-                                    placeholder="Ex: Saiu mais cedo por motivo de consulta médica"></textarea>
+                                    placeholder="Ex: Saiu mais cedo por motivo de consulta médica, intervalo de almoço etc."></textarea>
                             </div>
 
                             <button class="btn btn-success" type="submit">Registrar</button>
                         </form>
+
                     </div>
                 </div>
             </div>

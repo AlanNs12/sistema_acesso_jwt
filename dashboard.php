@@ -4,13 +4,28 @@ require_once 'conexao.php';
 $total_funcionarios = $pdo->query("SELECT COUNT(*) FROM funcionarios")->fetchColumn();
 
 // Registros do dia
+// Registros do dia (baseado na nova tabela registros_funcionarios)
 $data_hoje = date('Y-m-d');
-$stmt = $pdo->prepare("SELECT tipo_registro, COUNT(*) as total 
-                       FROM registros 
-                       WHERE DATE(data_hora) = ? 
-                       GROUP BY tipo_registro");
+
+// Conta entradas (hora_entrada preenchida)
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM registros_funcionarios WHERE data = ? AND hora_entrada IS NOT NULL");
 $stmt->execute([$data_hoje]);
-$registros = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+$entradas = $stmt->fetchColumn();
+
+// Conta saídas (hora_saida preenchida)
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM registros_funcionarios WHERE data = ? AND hora_saida IS NOT NULL");
+$stmt->execute([$data_hoje]);
+$saidas = $stmt->fetchColumn();
+
+// Conta saída para almoço (com base em observações)
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM registros_funcionarios WHERE data = ? AND observacoes LIKE '%almoco%' AND hora_saida IS NULL");
+$stmt->execute([$data_hoje]);
+$saida_almoco = $stmt->fetchColumn();
+
+// Conta retorno do almoço (com base em observações e hora_saida preenchida)
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM registros_funcionarios WHERE data = ? AND observacoes LIKE '%almoco%' AND hora_saida IS NOT NULL");
+$stmt->execute([$data_hoje]);
+$retorno_almoco = $stmt->fetchColumn();
 ?>
 <?php
 session_start();
@@ -28,7 +43,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="shortcut icon" href="images/logo-dfa.png" type="image/x-icon">
+  <link rel="shortcut icon" href="images/logo-dfa.png" type="image/x-icon">
 </head>
 
 <body>
@@ -49,11 +64,12 @@ if (!isset($_SESSION['usuario_id'])) {
                   <h5 class="card-title">Registros de Hoje (<?= date('d/m/Y') ?>)</h5>
                   <p class="card-text">
                   <ul>
-                    <li>Entradas: <?= $registros['entrada'] ?? 0 ?></li>
-                    <li>Saídas: <?= $registros['saida'] ?? 0 ?></li>
-                    <li>Saída para almoço: <?= $registros['saida_almoco'] ?? 0 ?></li>
-                    <li>Retorno do almoço: <?= $registros['retorno_almoco'] ?? 0 ?></li>
+                    <li>Entradas: <?= $entradas ?></li>
+                    <li>Saídas: <?= $saidas ?></li>
+                    <li>Saída para almoço: <?= $saida_almoco ?></li>
+                    <li>Retorno do almoço: <?= $retorno_almoco ?></li>
                   </ul>
+
                   </p>
                   <a href="funcionarios/listar_registros.php" class="btn btn-outline-light">Ver registros &#128203; </a>
                 </div>

@@ -1,18 +1,29 @@
 <?php
 require_once '../conexao.php';
 
-header("Content-Type: application/vnd.ms-excel; charset=UTF-8");
-header("Content-Disposition: attachment; filename=registros_" . date('Ymd_His') . ".xls");
+// Headers para forçar download como Excel (.xls)
+header("Content-Type: application/vnd.ms-excel; charset=UTF-16LE");
+header("Content-Disposition: attachment; filename=registros_funcionarios.xls");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-echo "\xEF\xBB\xBF";  // Importante! Corrige os acentos no Excel
+// Emite BOM para UTF-16LE (evita problemas com acentuação)
+echo chr(255) . chr(254);
 
+// Função para converter para UTF-16LE (compatível com Excel)
+function encodeExcel($string) {
+    return mb_convert_encoding($string, "UTF-16LE", "UTF-8");
+}
+
+// Filtros recebidos via GET
 $filtro_funcionario = $_GET['funcionario_id'] ?? '';
 $filtro_data_inicio = $_GET['data_inicio'] ?? '';
 $filtro_data_fim = $_GET['data_fim'] ?? '';
 
-$sql = "SELECT r.id, r.tipo_registro, r.data_hora, r.observacoes, f.nome 
-        FROM registros r 
-        JOIN funcionarios f ON f.id = r.funcionario_id 
+// SQL base
+$sql = "SELECT rf.*, f.nome 
+        FROM registros_funcionarios rf
+        JOIN funcionarios f ON f.id = rf.funcionario_id
         WHERE 1=1";
 
 $params = [];
@@ -21,78 +32,44 @@ if ($filtro_funcionario) {
     $sql .= " AND f.id = ?";
     $params[] = $filtro_funcionario;
 }
-
 if ($filtro_data_inicio && $filtro_data_fim) {
-    $sql .= " AND DATE(r.data_hora) BETWEEN ? AND ?";
+    $sql .= " AND rf.data BETWEEN ? AND ?";
     $params[] = $filtro_data_inicio;
     $params[] = $filtro_data_fim;
 }
 
-$sql .= " ORDER BY r.data_hora DESC";
+$sql .= " ORDER BY rf.data DESC";
+
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $registros = $stmt->fetchAll();
 
-$tipos_registro = [
-    'entrada' => 'Entrada (Entry)',
-    'saida' => 'Saída (Exit)',
-    'almoco' => 'Saída para Almoço (Lunch Out)',
-    'retorno_almoco' => 'Retorno do Almoço (Lunch Return)',
-];
-
-
-echo "
-<style>
-    table {
-        border-collapse: collapse;
-        text-align: center;
-        font-family: Arial, sans-serif;
-        
-    }
-    th {
-        background-color: #2c3e50;
-        color: white;
-        padding: 6px;
-        border: 1px solid #ccc;
-        text-align: left;
-    }
-    td {
-        padding: 6px;
-        border: 1px solid #ccc;
-        vertical-align: top;
-    }
-    tr {
-        text-align: center;
-    }
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-</style>
-";
-
-echo "<table>";
-echo "<tr><th colspan=\"5\">Embassy Of the Phillipines to Brasilia | Control of Access System (Controle de Acesso)</th>
-</tr>";
-echo "<tr></tr>";
-echo "<tr>
-    <th>Employee (Funcionário)</th>
-    <th>Type (Tipo)</th>
-    <th>Date (Data)</th>
-    <th>Time (Hora)</th>
-    <th>Observations (Observações)</th>
-      </tr>";
+// Início da tabela HTML com bordas
+echo encodeExcel("<table border='1'>");
+echo encodeExcel("<tr>
+        <th>Funcionário</th>
+        <th>Data de Entrada</th>
+        <th>Hora de Entrada</th>
+        <th>Data de Saída</th>
+        <th>Hora de Saída</th>
+        <th>Observações</th>
+    </tr>");
 
 foreach ($registros as $r) {
-    $data = date('d/m/Y', strtotime($r['data_hora']));
-    $hora = date('H:i:s', strtotime($r['data_hora']));
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($r['nome']) . "</td>";
-    echo "<td>" . ($tipos_registro[$r['tipo_registro']] ?? 'Desconhecido (Unknown)') . "</td>";
-    echo "<td>$data</td>";
-    echo "<td>$hora</td>";
-    echo "<td>" . htmlspecialchars($r['observacoes'] ?? '') . "</td>";
-    echo "</tr>";
+    echo encodeExcel("<tr>");
+    echo encodeExcel("<td>" . htmlspecialchars($r['nome']) . "</td>");
+    echo encodeExcel("<td>" . date('d/m/Y', strtotime($r['data'])) . "</td>");
+    echo encodeExcel("<td>" . ($r['hora_entrada'] ?? '-') . "</td>");
+
+    // Data de Saída formatada
+    echo encodeExcel("<td>" . (!empty($r['data_saida']) && $r['data_saida'] != '0000-00-00'
+        ? date('d/m/Y', strtotime($r['data_saida']))
+        : '-') . "</td>");
+
+    echo encodeExcel("<td>" . ($r['hora_saida'] ?? '-') . "</td>");
+    echo encodeExcel("<td>" . (!empty($r['observacoes']) ? htmlspecialchars($r['observacoes']) : '-') . "</td>");
+    echo encodeExcel("</tr>");
 }
 
-echo "</table>";
+echo encodeExcel("</table>");
 ?>

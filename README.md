@@ -2,6 +2,21 @@
 
 Este sistema web tem como objetivo gerenciar entradas e saídas de funcionários, veículos e encomendas dentro de uma organização. Ele foi desenvolvido com foco em controle, rastreabilidade e facilidade de uso para porteiros, administradores e colaboradores.
 
+# Tecnologias Utilizadas
+Backend: PHP 7+, PDO para conexão com banco de dados
+
+Frontend: HTML5, CSS3, Bootstrap 4, JavaScript
+
+Banco de Dados: PostgreSQL
+
+Exportação: Geração de planilhas Excel via Content-Disposition
+
+Segurança:
+
+Controle de sessão e autenticação.
+
+Painel com permissões para administradores.
+
 ## 📌 Funcionalidades
 
 ### 👷‍♂️ Funcionários
@@ -91,19 +106,6 @@ CREATE TABLE encomendas (
     hora_entrega TIME,
     recebido_por VARCHAR(100)
 );
-```sql
+```
 
-# Tecnologias Utilizadas
-Backend: PHP 7+, PDO para conexão com banco de dados
 
-Frontend: HTML5, CSS3, Bootstrap 4, JavaScript
-
-Banco de Dados: PostgreSQL
-
-Exportação: Geração de planilhas Excel via Content-Disposition
-
-Segurança:
-
-Controle de sessão e autenticação.
-
-Painel com permissões para administradores.

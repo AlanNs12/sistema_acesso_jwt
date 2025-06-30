@@ -26,34 +26,40 @@ $saida_almoco = $stmt->fetchColumn();
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM registros_funcionarios WHERE data = ? AND observacoes LIKE '%almoco%' AND hora_saida IS NOT NULL");
 $stmt->execute([$data_hoje]);
 $retorno_almoco = $stmt->fetchColumn();
-?>
-<?php
+
 session_start();
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-  header("Location: login.html");
-  exit;
+    // Se não estiver logado, redireciona para a página de login
+    header("Location: login_page.php"); // Alterado para login_page.php
+    exit; // Encerra o script para evitar execução adicional
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles/lumen_bootstrap.min.css">
   <link rel="shortcut icon" href="images/logo-dfa.png" type="image/x-icon">
 </head>
 
 <body>
   <?php include 'menu.php'; ?>
 
-  <div class="container">
+  <div class="container mt-4"> <!-- Adicionado mt-4 para margem superior -->
+    <?php
+    // Exibir mensagem de acesso negado, se houver
+    if (isset($_SESSION['acesso_negado_erro'])) {
+        echo '<div class="alert alert-danger">' . $_SESSION['acesso_negado_erro'] . '</div>';
+        unset($_SESSION['acesso_negado_erro']); // Limpa a mensagem da sessão
+    }
+    ?>
     <div class="card">
       <h1 class="card-header">Painel Inicial</h1>
       <div class="card-body">
-        <h4>Bem-vindo, <strong><?= $_SESSION['usuario_nome'] ?>!</strong></h4>
+        <h4>Bem-vindo, <strong><?= htmlspecialchars($_SESSION['usuario_nome']) ?>!</strong></h4> <!-- Adicionado htmlspecialchars -->
         <div class="card-group">
 
           <div class="row">

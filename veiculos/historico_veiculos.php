@@ -2,9 +2,16 @@
 require_once '../conexao.php';
 session_start();
 
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../login_page.php");
+    exit;
+}
+
 // Verifica se o usuário é administrador
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'admin') {
-    echo "<div class='alert alert-danger'>Acesso negado. Apenas administradores podem visualizar o histórico de veículos.</div>";
+if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] !== 'admin') {
+    $_SESSION['acesso_negado_erro'] = "Você não tem permissão para acessar o histórico de veículos.";
+    header("Location: ../dashboard.php");
     exit;
 }
 
@@ -31,7 +38,8 @@ $veiculos_desativados = $stmt->fetchAll();
 <head>
   <meta charset="UTF-8">
   <title>Histórico de Veículos</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../styles/lumen_bootstrap.min.css">
+  <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
 </head>
 <body>
   <?php include '../menu.php'; ?>

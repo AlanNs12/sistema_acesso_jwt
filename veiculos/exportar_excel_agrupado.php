@@ -1,4 +1,18 @@
 <?php
+session_start();
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../login_page.php");
+    exit;
+}
+// A exportação pode ser permitida para usuários logados,
+// não necessariamente apenas admins, dependendo do requisito.
+// Se precisar restringir a admins:
+/*
+if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] !== 'admin') {
+    die("Acesso negado.");
+}
+*/
 require_once '../conexao.php';
 date_default_timezone_set('America/Sao_Paulo');
 

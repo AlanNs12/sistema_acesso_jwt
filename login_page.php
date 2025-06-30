@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Login - Controle de Acesso</title>
-    <link rel="stylesheet" href="styles/style-signin.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/lumen_bootstrap.min.css">
 </head>
 <body class="text-center">
         <form class="form-signin" action="login.php" method="POST">
             <img class="mb-4" src="images/logo-dfa.png" alt="" width="120" height="120">
             <h1 class="h3 mb-3 font-weight-normal">Sistema de controle </h1>
+            <?php
+            session_start();
+            if (isset($_SESSION['login_erro'])) {
+                echo '<div class="alert alert-danger">' . $_SESSION['login_erro'] . '</div>';
+                unset($_SESSION['login_erro']); // Limpa a mensagem de erro da sessão
+            }
+            ?>
             <label class="sr-only">Email</label>
-            <input type="email" name="email" class="form-control" placeholder="Email address" required="">
+            <input type="email" name="email" class="form-control" placeholder="Endereço de e-mail" required="">
             <label class="sr-only">Password</label>
-            <input type="password" name="senha" class="form-control" placeholder="Password" required="">
+            <input type="password" name="senha" class="form-control" placeholder="Senha" required="">
             <div class="checkbox mb-3">
         
             </div>

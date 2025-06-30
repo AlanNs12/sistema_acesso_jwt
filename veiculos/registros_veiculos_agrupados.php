@@ -3,10 +3,17 @@ require_once '../conexao.php';
 session_start();
 $data_filtro = isset($_GET['data']) ? $_GET['data'] : null;
 
-
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../login.html");
+    header("Location: ../login_page.php"); // Alterado para login_page.php
     exit;
+}
+
+// Usuários logados podem ver esta lista.
+// Se houver uma mensagem de acesso negado de outra página, exiba-a.
+if (isset($_SESSION['acesso_negado_erro'])) {
+    echo '<div class="alert alert-danger">' . $_SESSION['acesso_negado_erro'] . '</div>';
+    unset($_SESSION['acesso_negado_erro']);
 }
 
 $registros_por_pagina = 20;
@@ -108,7 +115,7 @@ foreach ($saidas as $saida) {
 <head>
     <meta charset="UTF-8">
     <title>Registros Veiculos</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles/lumen_bootstrap.min.css">
     <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
 </head>
 

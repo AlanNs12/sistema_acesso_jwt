@@ -2,9 +2,18 @@
 require_once '../conexao.php';
 session_start();
 
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-  header("Location: login.html");
-  exit;
+    header("Location: ../login_page.php"); // Alterado para login_page.php
+    exit;
+}
+
+// Esta página pode ser acessada por usuários não-admin para verem seus próprios registros (se implementado)
+// ou por admins para ver todos. A lógica de filtro já existe.
+// Se houver uma mensagem de acesso negado de outra página, exiba-a.
+if (isset($_SESSION['acesso_negado_erro'])) {
+    echo '<div class="alert alert-danger">' . $_SESSION['acesso_negado_erro'] . '</div>';
+    unset($_SESSION['acesso_negado_erro']);
 }
 
 $filtro_funcionario = $_GET['funcionario_id'] ?? '';
@@ -76,8 +85,7 @@ foreach ($registros as $r) {
 <head>
   <meta charset="UTF-8">
   <title>Registros</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../styles/lumen_bootstrap.min.css">
   <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>

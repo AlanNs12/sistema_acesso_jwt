@@ -3,8 +3,16 @@ session_start();
 require_once '../conexao.php';
 date_default_timezone_set('America/Sao_Paulo');
 
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'admin') {
-    echo "<div class='alert alert-danger'>Acesso negado. Apenas administradores podem excluir registros.</div>";
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../login_page.php");
+    exit;
+}
+
+// Verifica se o usuário é admin para excluir
+if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] !== 'admin') {
+    $_SESSION['acesso_negado_erro'] = "Você não tem permissão para excluir registros de veículos.";
+    header("Location: gerenciar_veiculos.php"); // Redireciona de volta para a gerência
     exit;
 }
 

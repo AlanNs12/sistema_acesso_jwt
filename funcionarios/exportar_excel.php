@@ -1,4 +1,12 @@
 <?php
+session_start();
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    // Idealmente, não deveria chegar aqui sem estar logado se o link para exportar
+    // só aparece para usuários logados. Mas é uma boa prática verificar.
+    header("Location: ../login_page.php");
+    exit;
+}
 require_once '../conexao.php';
 
 // Headers para forçar download como Excel (.xls)

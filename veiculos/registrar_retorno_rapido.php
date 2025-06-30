@@ -4,10 +4,13 @@ date_default_timezone_set('America/Sao_Paulo');
 
 session_start();
 
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../login.html");
+    header("Location: ../login_page.php"); // Alterado para login_page.php
     exit;
 }
+
+// Qualquer usuário logado pode registrar um retorno rápido.
 
 $dataHoraAtual = date('Y-m-d H:i:s');
 $motorista = $_POST['motorista'];

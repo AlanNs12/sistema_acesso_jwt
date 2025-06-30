@@ -2,14 +2,18 @@
 require_once '../conexao.php';
 session_start();
 
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'admin') {
-    echo "<div class='alert alert-danger'>Acesso negado. Apenas administradores podem acessar esta página.</div>";
-    exit;
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    // Se não estiver logado, redireciona para a página de login
+    header("Location: ../login_page.php"); // Ajustado o caminho e nome da página
+    exit; // Encerra o script para evitar execução adicional
 }
 
-
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.html");
+// Verifica se o usuário é admin para acessar esta página
+if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] !== 'admin') {
+    // Define uma mensagem de erro e redireciona se não for admin
+    $_SESSION['acesso_negado_erro'] = "Você não tem permissão para acessar esta página.";
+    header("Location: ../dashboard.php"); // Ajustado o caminho
     exit;
 }
 

@@ -2,10 +2,19 @@
 require_once '../conexao.php';
 session_start();
 
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.html");
+    header("Location: ../login_page.php"); // Alterado para login_page.php
     exit;
 }
+
+// Qualquer usuário logado pode registrar seu ponto.
+// Se houver uma mensagem de acesso negado de outra página, exiba-a.
+if (isset($_SESSION['acesso_negado_erro'])) {
+    echo '<div class="alert alert-danger">' . $_SESSION['acesso_negado_erro'] . '</div>';
+    unset($_SESSION['acesso_negado_erro']);
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $funcionario_id = $_POST['funcionario_id'];
@@ -50,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Registro de Entrada/Saída</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles/lumen_bootstrap.min.css">
     <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
 </head>
 

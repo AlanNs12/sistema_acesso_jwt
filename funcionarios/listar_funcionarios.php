@@ -2,14 +2,19 @@
 require_once '../conexao.php';
 $stmt = $pdo->query("SELECT * FROM funcionarios");
 $funcionarios = $stmt->fetchAll();
-?>
 
-<?php
-//validação necessidade de login
 session_start();
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-  header("Location: login.html");
-  exit;
+    header("Location: ../login_page.php"); // Alterado para login_page.php
+    exit;
+}
+
+// Apenas admins podem listar e gerenciar todos os funcionários desta forma
+if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] !== 'admin') {
+    $_SESSION['acesso_negado_erro'] = "Você não tem permissão para gerenciar funcionários.";
+    header("Location: ../dashboard.php");
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -18,10 +23,8 @@ if (!isset($_SESSION['usuario_id'])) {
 <head>
   <meta charset="UTF-8">
   <title>Funcionários</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
+  <link rel="stylesheet" href="../styles/lumen_bootstrap.min.css">
+  <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
 </head>
 
 <body>

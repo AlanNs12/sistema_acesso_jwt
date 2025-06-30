@@ -4,9 +4,12 @@ session_start();
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-  header("Location: ../login.html");
+  header("Location: ../login_page.php"); // Alterado para login_page.php
   exit;
 }
+
+// Qualquer usuário logado pode registrar sua própria saída rápida,
+// não precisa ser admin.
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $registro_id = $_POST['registro_id'];

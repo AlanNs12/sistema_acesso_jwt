@@ -8,7 +8,7 @@ $funcionarios = $stmt->fetchAll();
 //validação necessidade de login
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
-  header("Location: login.html");
+  header("Location: ../login.html");
   exit;
 }
 ?>
@@ -18,7 +18,7 @@ if (!isset($_SESSION['usuario_id'])) {
 <head>
   <meta charset="UTF-8">
   <title>Funcionários</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">

@@ -28,7 +28,7 @@ if (isset($_GET['remover'])) {
   } catch (PDOException $e) {
     if ($e->getCode() === '23000') {
       // Desativa o veículo
-      $pdo->prepare("UPDATE veiculos SET ativo = 0 WHERE id = ?")->execute([$id]);
+      $pdo->prepare("UPDATE veiculos SET ativo = FALSE WHERE id = ?")->execute([$id]);
       $_SESSION['mensagem_erro'] = "O veículo possui registros e não pode ser excluído. Ele foi desativado, mas os dados foram mantidos.";
     } else {
       $_SESSION['mensagem_erro'] = "Erro ao excluir veículo: " . $e->getMessage();
@@ -40,7 +40,7 @@ if (isset($_GET['remover'])) {
 }
 
 // Consulta apenas veículos ativos
-$stmt = $pdo->query("SELECT * FROM veiculos WHERE ativo = 1 ORDER BY id DESC");
+$stmt = $pdo->query("SELECT * FROM veiculos WHERE ativo = TRUE ORDER BY id DESC");
 $veiculos = $stmt->fetchAll();
 
 ?>

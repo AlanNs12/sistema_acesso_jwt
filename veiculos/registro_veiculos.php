@@ -69,9 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <select name="veiculo_id" class="form-control" required>
                                     <option value="" hidden>Selecione</option>
                                     <?php
-                                    $stmt = $pdo->query("SELECT id, placa, modelo FROM veiculos");
-                                    while ($veiculo = $stmt->fetch()) {
-                                        echo "<option value='{$veiculo['id']}'>{$veiculo['placa']} - {$veiculo['modelo']}</option>";
+                                    // Corrigido para usar 'nome' e filtrar por 'ativo = TRUE'
+                                    $stmt_veiculos = $pdo->query("SELECT id, placa, nome FROM veiculos WHERE ativo = TRUE ORDER BY placa, nome");
+                                    while ($veiculo = $stmt_veiculos->fetch()) {
+                                        echo "<option value='{$veiculo['id']}'>{$veiculo['placa']} - {$veiculo['nome']}</option>";
                                     }
                                     ?>
                                 </select>

@@ -35,7 +35,7 @@ if ($filtro_data_inicio && $filtro_data_fim) {
   $params[] = $filtro_data_inicio;
   $params[] = $filtro_data_fim;
 }
-$sql .= " ORDER BY rf.data DESC LIMIT $inicio, $itens_por_pagina";
+$sql .= " ORDER BY rf.data DESC LIMIT $itens_por_pagina OFFSET $inicio";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
@@ -75,10 +75,11 @@ foreach ($registros as $r) {
 
 <head>
   <meta charset="UTF-8">
+  <base href="/sistema_acesso_jwt/">
   <title>Registros</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- Assumindo que este style.css é o da raiz do projeto -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
+  <link rel="shortcut icon" href="images/logo-dfa.png" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     /* Estilo para a caixa de observações */

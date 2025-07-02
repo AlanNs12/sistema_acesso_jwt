@@ -18,13 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo "<script>
             alert('Funcionário cadastrado com sucesso. (Employee successfully registered.)');
-            window.location.href = 'listar_registros.php';
+            window.location.href = 'funcionarios/listar_registros.php';
         </script>";
     exit;
   } else {
     echo "<script>
             alert('Todos os campos são obrigatórios.');
-            window.location.href = 'cadastro_funcionario.php';
+            window.location.href = 'funcionarios/cadastro_funcionario.php';
         </script>";
     exit;
   }
@@ -36,10 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
   <meta charset="UTF-8">
+  <base href="/sistema_acesso_jwt/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Funcionário</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <link rel="shortcut icon" href="../images/logo-dfa.png" type="image/x-icon">
+  <link rel="shortcut icon" href="images/logo-dfa.png" type="image/x-icon">
 </head>
 
 <body>

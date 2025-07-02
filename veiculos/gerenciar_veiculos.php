@@ -9,10 +9,11 @@ if (!isset($_SESSION['usuario_id'])) {
 // Inserção
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['placa'], $_POST['modelo'])) {
   $placa = $_POST['placa'];
-  $modelo = $_POST['modelo'];
+  $nome_veiculo = $_POST['modelo']; // O campo do formulário ainda é 'modelo'
 
-  $stmt = $pdo->prepare("INSERT INTO veiculos (placa, modelo) VALUES (?, ?)");
-  $stmt->execute([$placa, $modelo]);
+  // Adicionando a coluna 'ativo' com valor TRUE por padrão para novos veículos
+  $stmt = $pdo->prepare("INSERT INTO veiculos (placa, nome, ativo) VALUES (?, ?, TRUE)");
+  $stmt->execute([$placa, $nome_veiculo]);
   header("Location: gerenciar_veiculos.php");
   exit;
 }
@@ -109,7 +110,7 @@ $veiculos = $stmt->fetchAll();
                   <?php foreach ($veiculos as $v): ?>
                     <tr>
                       <td><?= htmlspecialchars($v['placa']) ?></td>
-                      <td><?= htmlspecialchars($v['modelo']) ?></td>
+                      <td><?= htmlspecialchars($v['nome']) ?></td>
                       <td>
                         <a href="?remover=<?= $v['id'] ?>" class="btn btn-danger btn-sm"
                           onclick="return confirm('Tem certeza que deseja remover este veículo?')">Remover</a>

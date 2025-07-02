@@ -35,10 +35,18 @@ if ($filtro_data_inicio && $filtro_data_fim) {
   $params[] = $filtro_data_inicio;
   $params[] = $filtro_data_fim;
 }
-$sql .= " ORDER BY rf.data DESC LIMIT $itens_por_pagina OFFSET $inicio";
+// Usar placeholders nomeados para LIMIT e OFFSET
+$sql .= " ORDER BY rf.data DESC LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
-$stmt->execute($params);
+
+// Adicionar os valores de paginação ao array de parâmetros
+// É importante que as chaves correspondam aos placeholders nomeados
+$params_to_execute = $params; // Copia os parâmetros de filtro
+$params_to_execute['limit'] = (int)$itens_por_pagina;
+$params_to_execute['offset'] = (int)$inicio;
+
+$stmt->execute($params_to_execute);
 $registros = $stmt->fetchAll();
 
 // Total para paginação

@@ -33,7 +33,7 @@ $total_paginas = ceil($total_registros / $registros_por_pagina);
 // Buscar os registros com paginação
 if ($data_filtro) {
     $sql = "
-        SELECT rv.*, v.placa, v.modelo 
+        SELECT rv.*, v.placa, v.nome
         FROM registros_veiculos rv 
         JOIN veiculos v ON rv.veiculo_id = v.id 
         WHERE rv.tipo_registro = 'saida' AND DATE(rv.data_hora) = :data
@@ -44,7 +44,7 @@ if ($data_filtro) {
     $stmt->bindValue(':data', $data_filtro);
 } else {
     $sql = "
-        SELECT rv.*, v.placa, v.modelo 
+        SELECT rv.*, v.placa, v.nome
         FROM registros_veiculos rv 
         JOIN veiculos v ON rv.veiculo_id = v.id 
         WHERE rv.tipo_registro = 'saida'
@@ -93,7 +93,7 @@ foreach ($saidas as $saida) {
         'saida_data' => date('d/m/Y', strtotime($saida['data_hora'])),
         'saida_hora' => date('H:i', strtotime($saida['data_hora'])),
         'motorista' => $saida['motorista_responsavel'],
-        'veiculo' => $saida['placa'] . ' - ' . $saida['modelo'],
+        'veiculo' => $saida['placa'] . ' - ' . $saida['nome'], // Alterado de modelo para nome
         'observacoes' => $saida['observacoes'],
         'retorno_data' => $retorno ? date('d/m/Y', strtotime($retorno['data_hora'])) : '',
         'retorno_hora' => $retorno ? date('H:i', strtotime($retorno['data_hora'])) : ''
